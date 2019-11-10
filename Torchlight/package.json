@@ -1,0 +1,16 @@
+{
+  "name": "torchlight",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/node": "^12.12.7",
+    "glob": "^7.1.6"
+  }
+}
