@@ -92,8 +92,7 @@ export class TLScan {
         this.encode = encode;
     }
 
-    get tokens()
-    {
+    get tokens() {
         return this._tokens;
     }
 
@@ -110,7 +109,7 @@ export class TLScan {
     }
 
     private handleContent() {
-        while(this.content.length > 0){
+        while (this.content.length > 0) {
             if (this.content[0] == /* [ */ this.tag.startTagLeft) {
                 if (this.content[1] == "/") {
                     /* 结束标签 */
@@ -125,7 +124,6 @@ export class TLScan {
                 this.handleTypeTag();
             }
         }
-        l(this.tokens);
     }
 
     private handleTag(type: TLTagType) {
@@ -269,6 +267,102 @@ export class TLScan {
 
 }
 
+class TLParser {
+    public file: string;
+    public scan: TLScan;
+
+    public nodeStackLevel: number;
+    public nodeStack: TLNode[];
+    public currentNode: TLNode;
+    public topNode: TLNode;
+
+    constructor(file: string) {
+        this.setFile(file);
+    }
+
+    public setFile(file: string) {
+        this.file = file;
+        this.scan = new TLScan(file);
+        this.nodeStackLevel = 0;
+    }
+
+    public startParse() {
+        this.scan.startScan();
+        l(this.scan);
+
+        if (this.scan.tokens.length > 0) {
+            this.topNode = new TLObjectNode(
+                this.scan.tokens[0].name,
+                []
+            );
+            this.currentNode = this.topNode;
+            this.pushNode(this.currentNode);
+            this.handleChildToken(1);
+            l("123213",this.topNode);
+        }
+
+        l(this.topNode);
+    }
+
+    private handleChildToken(index: number) {
+        let tokenLength = this.scan.tokens.length;
+        if (index > tokenLength) {
+            return;
+        }
+
+        // 第一个
+        let i = index;
+        let v = this.scan.tokens[i];
+
+        let firstToken = this.scan.tokens[0];
+        let nexToken: TLToken | null;
+
+
+        //属性处理
+        if (v.name != firstToken.name) {
+            if (i < tokenLength - 1) {
+                nexToken = this.scan.tokens[i + 1];
+            } else {
+                nexToken = null;
+            }
+
+            if (v.type == TLTokenKind.typeTag
+                && nexToken.type == TLTokenKind.value) { /* 属性值 */
+
+                let typeNode = new TLPropertyNode(
+                    v.name,
+                    []
+                );
+                typeNode.setParent(this.lastNode);
+                this.lastNode.pushChild(typeNode);
+
+            } else if (v.type == TLTokenKind.startTag) { /* 子属性 */
+                this.currentNode = new TLObjectNode(
+                    v.name,
+                    []
+                );
+                this.currentNode.setParent(this.lastNode);
+                this.lastNode.pushChild(this.currentNode);
+                this.pushNode(this.currentNode);
+
+                this.handleChildToken(i + 1);
+            }
+        }
+    }
+    private pushNode(node: TLNode) {
+        this.nodeStack.push(node);
+        this.nodeStackLevel = this.nodeStackLevel + 1;
+    }
+    private popNode(node: TLNode) {
+        this.nodeStack.pop();
+        this.nodeStackLevel = this.nodeStackLevel - 1;
+    }
+
+    get lastNode(): TLObjectNode {
+        return this.nodeStack[this.nodeStack.length - 1] as TLObjectNode;
+    }
+}
+
 // Token
 class TLToken {
     public type: TLTokenKind;
@@ -331,45 +425,77 @@ class TLValueToken extends TLToken {
 
 // Node
 class TLNode {
+    public _name: string;
+    public _parent: TLNode;
+    public _child: TLNode[];
+
     constructor(
         name: string,
-        child: Node[]
-    ) { }
-}
-
-class TLNodeToken extends TLTagToken {
-    public child: TLToken[];
-
-    public initToken(
-        type: TLTokenKind,
-        name: string,
-
-        file: string,
-        start: number,
-        end: number,
-        raw: string,
+        child: TLNode[]
     ) {
-        this.type = type;
-        this.name = name;
-
-        this.file = file;
-        this.start = start;
-        this.end = end;
-        this.raw = raw;
-
+        this._name = name;
+        this._child = child;
     }
 
-    public childPush(token: TLToken) {
-        this.child.push(token);
+
+    public setParent(parent: TLNode) {
+        this._parent = parent;
+    }
+}
+
+class TLObjectNode extends TLNode {
+    public pushChild(node: TLNode) {
+        this._child.push(node);
+    }
+    public toString() {
+        return JSON.stringify({
+            "name": this._name,
+            "parent": this._parent,
+        });
     }
 
 }
 
+class TLPropertyNode extends TLObjectNode {
+
+}
+
+class TLValueNode extends TLNode {
+    public _id: string;
+    public _type: string;
+    public _value: string;
+
+    public initNode(
+        parent: TLNode,
+        id: string,
+        type: string,
+        value: string
+    ) {
+        this._parent = parent;
+        this._id = id;
+        this._type = type;
+        this._value = value;
+    }
+
+    public toString() {
+        return JSON.stringify({
+            "name": this._name,
+            "parent": this._parent,
+            "id": this._id,
+            "type": this._type,
+            "value": this._value
+        });
+    }
+}
 
 // Test
-// let file = "./media/BOSS_RESISTS.DAT";
-// let parser: TLScan = new TLScan(file);
-// parser.startScan();
+let file = "./media/BOSSNAME.LAYOUT";
+// let scan: TLScan = new TLScan(file);
+// scan.startScan();
+
+
+let parser: TLParser = new TLParser(file);
+parser.startParse();
 
 function l(...e) {
     console.log(e);
