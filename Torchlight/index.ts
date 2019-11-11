@@ -1,60 +1,29 @@
 import * as glob from "glob";
 import * as fs from "fs";
+import {TLScan} from "./parser";
 
-/* 正则匹配 */
-const TL_TYPE = [
-    "BOOL",
 
-    "UNSIGNED INT",
-    "INTEGER",
-    "INTEGER64",
-
-    "FLOAT",
-    "STRING",
-];
-
-const TL_TAG = [
-    "LAYOUT",
-    "OBJECTS",
-    "BASEOBJECT",
-    "PROPERTIES",
-    "LOGICGROUP",
-    "LOGICOBJECT"
-];
-
-const TL_REG = [];
-TL_TAG.forEach((v,i,[])=>{
-    TL_REG.push(`\[${v}\]`);
-    TL_REG.push(`\[/${v}\]`);
-});
-TL_TYPE.forEach((v,i,[])=>{
-    TL_REG.push(`\[${v}\]`);
-})
-
-console.log(TL_REG);
-
-const gameDir = "E:/Steam/steamapps/common/Torchlight II";
-const mediaDir = gameDir+"/MEDIA/";
-const ENCODE = 'utf-8';
+const gameDir = ".";
+const mediaDir = gameDir+"/media/";
 
 glob(mediaDir+"/*.LAYOUT",(err,files) => {
-    
-    for (const tempFile of files) {
-        
-    }
 
+    let scan: TLScan;
+    l(files);
+    let tempFile = files[0];
+
+    //解析处理
+    if(scan){
+        scan.setFile(tempFile);
+    }else{
+        scan = new TLScan(tempFile);
+    }
+    
+    scan.startScan();
+    l(scan.tokens);
+    
 })
 
-let tempFile = mediaDir+"BOSSMUSIC.LAYOUT"; 
-
-// layoutFileHandle(tempFile);
-
-function layoutFileHandle(file:string){
-    fs.readFile(file,ENCODE,(err,c) => {
-        if(err){
-
-        }else{
-            console.log(c);
-        }
-    })   
+function l(...e) {
+    console.log(e);
 }
