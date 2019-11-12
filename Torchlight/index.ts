@@ -1,6 +1,6 @@
 import * as glob from "glob";
 import * as fs from "fs";
-import {TLScan} from "./parser";
+import {TLScan} from "./scan";
 
 
 const gameDir = ".";
