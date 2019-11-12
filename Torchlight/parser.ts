@@ -122,11 +122,12 @@ export class TLParser {
     }
 
     public writeToFile() {
-        let file = this.file;
+        let file = path.basename(this.file);
         let content = this.topNode.toString();
         let dataFile = "./data/" + file.substring(0,file.indexOf('.'))+".json";
         fs.writeFile(dataFile,content,(err)=>{
-            console.l(err);
+            //提示写入成功
+            l(this.file,"解析完成...");
         });
     }
 }
