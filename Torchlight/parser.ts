@@ -47,9 +47,6 @@ export class TLParser {
 
             this.handleChildToken();
         }
-        w(path.basename(this.file),this.topNode.toString());
-
-        l(this.topNode.toString());
     }
 
     private handleChildToken() {
@@ -123,28 +120,19 @@ export class TLParser {
     get lastNode(): TLObject {
         return this.nodeStack[this.nodeStack.length - 1];
     }
+
+    public writeToFile() {
+        let file = this.file;
+        let content = this.topNode.toString();
+        let dataFile = "./data/" + file.substring(0,file.indexOf('.'))+".json";
+        fs.writeFile(dataFile,content,(err)=>{
+            console.l(err);
+        });
+    }
 }
 
-
-// Test
-let file = "./media/BOSSNAME.LAYOUT";
-// let scan: TLScan = new TLScan(file);
-// scan.startScan();
-
-
-let parser: TLParser = new TLParser(file);
-parser.startParse();
 
 function l(...e) {
     console.log(e);
 }
 
-function w(file:string,content:string) {
-    
-    l(file);
-    let dataFile = "./data/" + file.substring(0,file.indexOf('.'))+".json";
-    l(dataFile);
-    fs.writeFile(dataFile,content,(err)=>{
-        console.log(err);
-    });
-}
