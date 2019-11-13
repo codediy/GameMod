@@ -1,8 +1,8 @@
-import {TLParser} from "../parser";
+import {TLParser} from "../src/parser";
 
 
 // Test
-let file = "./media/BOSSNAME.LAYOUT";
+let file = "../media/BOSSNAME.LAYOUT";
 // let scan: TLScan = new TLScan(file);
 // scan.startScan();
 

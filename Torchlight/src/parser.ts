@@ -7,9 +7,10 @@ import {
     TLType
 } from "./node";
 
+import { l } from "./util";
+
 import * as fs from "fs";
 import * as path from "path";
-import { l } from "./util";
 
 export class TLParser {
     public file: string;

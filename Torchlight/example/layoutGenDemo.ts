@@ -1,10 +1,10 @@
-import { TLObject, TLType } from "../node";
-import { TLGen } from "../gen";
-import { l } from "../util";
+import { TLObject, TLType } from "../src/node";
+import { TLGen } from "../src/gen";
+import { l } from "../src/util";
 
 // Test
 let o = new TLObject("Layout");
-let g = new TLGen("./gen/test.LAYOUT");
+let g = new TLGen("../gen/test.LAYOUT");
 
 o.addPro(
     new TLType(
