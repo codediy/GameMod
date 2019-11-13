@@ -2,7 +2,8 @@
 /* 标签类型 */
 export const enum TLTagType {
     start,
-    end
+    end,
+    type,
 }
 /* 标签字符 */
 export class TLTag {
@@ -32,6 +33,7 @@ export class TLTag {
     public typeTagRight = '>';
 
     public valueSplit = ":";
+
 }
 
 /* ***************Token******************* */
@@ -53,7 +55,7 @@ class TLToken {
 
 
 // 标签Token
-export  class TLTagToken extends TLToken {
+export class TLTagToken extends TLToken {
     public initToken(
         type: TLTokenKind,
         name: string,
@@ -75,7 +77,7 @@ export  class TLTagToken extends TLToken {
 
 }
 // 值内容
-export  class TLValueToken extends TLToken {
+export class TLValueToken extends TLToken {
     public id: string;
     public value: string;
 
@@ -116,7 +118,7 @@ interface TLObjectInterface {
 }
 
 
-export  class TLType implements TLTypeInterface {
+export class TLType implements TLTypeInterface {
     type: string;
     id: string;
     value: string;
@@ -132,31 +134,35 @@ export  class TLType implements TLTypeInterface {
         this.value = value;
     }
 
-    toJson(){
+    toJson() {
         return {
-            "type":this.type,
-            "id":this.id,
-            "value":this.value
+            "type": this.type,
+            "id": this.id,
+            "value": this.value
         }
     }
 
-    toString(){
+    toString() {
         return JSON.stringify(this.toJson());
     }
 }
 
-export  class TLObject implements TLObjectInterface {
+export class TLObject implements TLObjectInterface {
     name: string;
     property: TLType[];
     childs: TLObject[];
 
     constructor(
-        name: string
+        name: string,
+        childs?: TLObject[],
+        property?: TLType[],
     ) {
         this.name = name
-        this.property = [];
-        this.childs = [];
+        this.property = property || [];
+        this.childs = childs || [];
     }
+
+
 
     addPro(pro: TLType) {
         this.property.push(pro);
@@ -166,25 +172,25 @@ export  class TLObject implements TLObjectInterface {
         this.childs.push(child);
     }
 
-    toJson(){
+    toJson() {
         let child = [];
         let property = [];
 
-        this.property.forEach((v,i,[]) => {
-            property.push(v.toJson()); 
+        this.property.forEach((v, i, []) => {
+            property.push(v.toJson());
         });
-        this.childs.forEach((v,i,[]) => {
+        this.childs.forEach((v, i, []) => {
             child.push(v.toJson());
         });
 
         return {
-            "name":this.name,
-            "property":property,
-            "child":child,
+            "name": this.name,
+            "property": property,
+            "child": child,
         }
     }
 
-    toString(){
-        return JSON.stringify(this.toJson(),null,"\t");
+    toString() {
+        return JSON.stringify(this.toJson(), null, "\t");
     }
 }

@@ -1,248 +1,436 @@
 {
-	"name": "DUNGEON",
+	"name": "AFFIX",
 	"property": [
 		{
 			"type": "STRING",
 			"id": "NAME",
-			"value": "CursedFear"
-		},
-		{
-			"type": "BOOL",
-			"id": "VOLATILE",
-			"value": "false"
-		},
-		{
-			"type": "BOOL",
-			"id": "BOTTOMLESS",
-			"value": "false"
-		},
-		{
-			"type": "TRANSLATE",
-			"id": "DISPLAYNAME",
-			"value": "Shadowy Crevasse"
-		},
-		{
-			"type": "STRING",
-			"id": "PARENT_DUNGEON",
-			"value": "OSSEANWASTES"
+			"value": "BOSS_RESISTS"
 		},
 		{
 			"type": "INTEGER",
-			"id": "PLAYER_LVL_MATCH_MIN",
-			"value": "22"
+			"id": "RANK",
+			"value": "0"
 		},
 		{
 			"type": "INTEGER",
-			"id": "PLAYER_LVL_MATCH_MAX",
-			"value": "25"
+			"id": "MIN_SPAWN_RANGE",
+			"value": "0"
 		},
 		{
-			"type": "STRING",
-			"id": "PARENT_TOWN",
-			"value": "ZERYPHESH"
+			"type": "INTEGER",
+			"id": "MAX_SPAWN_RANGE",
+			"value": "999"
 		},
 		{
-			"type": "STRING",
-			"id": "TYPE",
-			"value": "DUNGEON"
+			"type": "FLOAT",
+			"id": "DURATION",
+			"value": "0"
+		},
+		{
+			"type": "INTEGER",
+			"id": "WEIGHT",
+			"value": "0"
+		},
+		{
+			"type": "INTEGER",
+			"id": "SLOTS_OCCUPY",
+			"value": "0"
 		}
 	],
 	"child": [
 		{
-			"name": "STRATA0",
+			"name": "UNITTYPES",
 			"property": [
 				{
 					"type": "STRING",
-					"id": "RULESET",
-					"value": "media/layouts/act2_caves/cursedfear_rules.template"
-				},
-				{
-					"type": "FLOAT",
-					"id": "GOLD_MIN",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "GOLD_MAX",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "GOLD_PER_METER_MIN",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "GOLD_PER_METER_MAX",
-					"value": "0"
-				},
-				{
-					"type": "STRING",
-					"id": "MONSTERSPAWNCLASS",
-					"value": "DESERTSPIDERCAVES"
-				},
-				{
-					"type": "FLOAT",
-					"id": "MONSTERS_PER_METER_MIN",
-					"value": "0.01"
-				},
-				{
-					"type": "FLOAT",
-					"id": "MONSTERS_PER_METER_MAX",
-					"value": "0.01"
-				},
-				{
-					"type": "STRING",
-					"id": "CHAMPIONSPAWNCLASS",
-					"value": "CHAMPIONS_DESERTSPIDERCAVE"
-				},
-				{
-					"type": "FLOAT",
-					"id": "CHAMPIONS_MIN",
-					"value": "2"
-				},
-				{
-					"type": "FLOAT",
-					"id": "CHAMPIONS_MAX",
-					"value": "2"
-				},
-				{
-					"type": "STRING",
-					"id": "PROPSPAWNCLASS",
-					"value": "NONE"
-				},
-				{
-					"type": "STRING",
-					"id": "NPCSPAWNCLASS",
-					"value": "NPCS_DUNGEON_ENCHANTERS_AND_MIMICS"
-				},
-				{
-					"type": "FLOAT",
-					"id": "NPCS_MIN",
-					"value": "1"
-				},
-				{
-					"type": "FLOAT",
-					"id": "NPCS_MAX",
-					"value": "1"
-				},
-				{
-					"type": "STRING",
-					"id": "CREEPSPAWNCLASS",
-					"value": "CREEPS_DESERTCAVE"
-				},
-				{
-					"type": "FLOAT",
-					"id": "CREEPS_PER_METER_MIN",
-					"value": "0.002"
-				},
-				{
-					"type": "FLOAT",
-					"id": "CREEPS_PER_METER_MAX",
-					"value": "0.002"
+					"id": "UNITTYPE",
+					"value": "MONSTER"
 				}
 			],
-			"child": [
-				{
-					"name": "MUST_BE_COMPLETED",
-					"property": [
-						{
-							"type": "STRING",
-							"id": "QUEST",
-							"value": "A1-MAIN-Q1"
-						}
-					],
-					"child": []
-				}
-			]
+			"child": []
 		},
 		{
-			"name": "STRATA1",
+			"name": "EFFECT",
 			"property": [
 				{
 					"type": "STRING",
-					"id": "RULESET",
-					"value": "media/layouts/act2_caves/cursedfear_bossroom_rules.template"
-				},
-				{
-					"type": "FLOAT",
-					"id": "GOLD_MIN",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "GOLD_MAX",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "GOLD_PER_METER_MIN",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "GOLD_PER_METER_MAX",
-					"value": "0"
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
 				},
 				{
 					"type": "STRING",
-					"id": "MONSTERSPAWNCLASS",
-					"value": "DESERTSPIDERCAVES"
-				},
-				{
-					"type": "FLOAT",
-					"id": "MONSTER_MIN",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "MONSTER_MAX",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "MONSTERS_PER_METER_MIN",
-					"value": "0"
-				},
-				{
-					"type": "FLOAT",
-					"id": "MONSTERS_PER_METER_MAX",
-					"value": "0"
+					"id": "DURATION",
+					"value": "ALWAYS"
 				},
 				{
 					"type": "STRING",
-					"id": "CHAMPIONSPAWNCLASS",
-					"value": "CHAMPIONS_DESERTSPIDERCAVE"
-				},
-				{
-					"type": "FLOAT",
-					"id": "CHAMPIONS_MIN",
-					"value": "2"
-				},
-				{
-					"type": "FLOAT",
-					"id": "CHAMPIONS_MAX",
-					"value": "2"
-				},
-				{
-					"type": "STRING",
-					"id": "PROPSPAWNCLASS",
-					"value": "NONE"
-				},
-				{
-					"type": "INTEGER",
-					"id": "MONSTER_LVL_MIN",
-					"value": "23"
-				},
-				{
-					"type": "INTEGER",
-					"id": "MONSTER_LVL_MAX",
-					"value": "25"
+					"id": "TYPE",
+					"value": "SLOW RESISTANCE"
 				},
 				{
 					"type": "BOOL",
-					"id": "ALLOW_PORTALS",
-					"value": "false"
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "85"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "85"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "CHARM RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "100"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "100"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "STUN RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "92"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "92"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "INTERRUPT RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "100"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "100"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "FLEE RESIST"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "RESISTANCE",
+					"value": "100"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "PERCENT KNOCK BACK RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "RESISTANCE",
+					"value": "95"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "SILENCE_RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "100"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "100"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "IMMOBILIZE RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "88"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "88"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "TELEPORT RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "75"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "75"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "PULL RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "100"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "100"
+				}
+			],
+			"child": []
+		},
+		{
+			"name": "EFFECT",
+			"property": [
+				{
+					"type": "STRING",
+					"id": "ACTIVATION",
+					"value": "PASSIVE"
+				},
+				{
+					"type": "STRING",
+					"id": "DURATION",
+					"value": "ALWAYS"
+				},
+				{
+					"type": "STRING",
+					"id": "TYPE",
+					"value": "BLIND RESISTANCE"
+				},
+				{
+					"type": "BOOL",
+					"id": "SAVE",
+					"value": "true"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MIN",
+					"value": "90"
+				},
+				{
+					"type": "FLOAT",
+					"id": "MAX",
+					"value": "90"
 				}
 			],
 			"child": []

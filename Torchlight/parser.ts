@@ -9,6 +9,7 @@ import {
 
 import * as fs from "fs";
 import * as path from "path";
+import { l } from "./util";
 
 export class TLParser {
     public file: string;
@@ -47,6 +48,8 @@ export class TLParser {
 
             this.handleChildToken();
         }
+
+        l(this.file,this.topNode);
     }
 
     private handleChildToken() {
@@ -133,7 +136,4 @@ export class TLParser {
 }
 
 
-function l(...e) {
-    console.log(e);
-}
 
