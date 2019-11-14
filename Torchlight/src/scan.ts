@@ -107,10 +107,10 @@ export class TLScan {
                     ? this.content.substring(startTag + 1, endTag)
                     /* [/(.*)] */
                     : this.content.substring(startTag + 2, endTag),
-                this.file,
                 this.offset,
                 this.offset + endTag - startTag,
-                this.content.substring(startTag, endTag + 1)
+                this.content.substring(startTag, endTag + 1),
+                //this.file,
             );
             this._tokens.push(tempTagToken);
             this.skip(endTag + 1);
@@ -139,10 +139,10 @@ export class TLScan {
             tempTagToken.initToken(
                 TLTokenKind.typeTag,
                 this.content.substring(startTag + 1, endTag),
-                this.file,
                 this.offset,
                 this.offset + endTag - startTag,
-                this.content.substring(startTag, endTag + 1)
+                this.content.substring(startTag, endTag + 1),
+                //this.file,
             );
             this._tokens.push(tempTagToken);
             this.skip(endTag + 1);
@@ -173,12 +173,12 @@ export class TLScan {
             let valueContent = temp.split( /* : */this.tag.valueSplit);
             if (valueContent.length == 2) {
                 tempTagToken.initToken(
-                    this.file,
+                    valueContent[0],
+                    valueContent[1],
                     this.offset,
                     this.offset + endTag - startTag,
                     temp,
-                    valueContent[0],
-                    valueContent[1]
+                    //this.file
                 );
             }
             this._tokens.push(tempTagToken);

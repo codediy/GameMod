@@ -157,7 +157,6 @@ export class TLMedia {
     writeFiels()
     {
         let rootFile = "1_"+path.basename(this._dir)+".json";
-       
         fs.writeFile(this._toDir+"/"+rootFile,this.allFilesToString(),(err)=>{
             if(err){
                 throw err;
@@ -165,14 +164,15 @@ export class TLMedia {
             //提示写入成功
             l(this._dir,"文件信息获取成功");
         });
+    }
 
+    parseMediaFiles(mediaFiles:TLMediaFile)
+    {   
         //生成各个文件的内容
         Object.keys(this._allFiles).forEach((v,i) => {
             this.parseMediaFiles(this._allFiles[v]);
         });
-    }
-    parseMediaFiles(mediaFiles:TLMediaFile)
-    {
+
         if(mediaFiles.dat.length > 0){
             mediaFiles.dat.forEach((v,i)=>{
                 this.parseFile(path.join(mediaFiles.dir,v));

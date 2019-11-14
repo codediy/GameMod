@@ -25,19 +25,19 @@ export class TLParser {
     public topNode: TLObject;
 
     constructor(file: string) {
+        this.scan = new TLScan(".");
         this.setFile(file);
     }
 
     public setFile(file: string) {
         this.file = file;
-        this.scan = new TLScan(file);
+        this.scan.setFile(file);
         this.nodeStack = [];
         this.nodeStackLevel = 0;
     }
 
     public startParse() {
         this.scan.startScan();
-
         //索引
         this.tokenIndex = 0;
         if (this.scan.tokens.length > 0) {
@@ -46,11 +46,15 @@ export class TLParser {
             );
             this.currentNode = this.topNode;
             this.tokenIndex = this.tokenIndex + 1;
-
-            this.handleChildToken();
+            
+            while(true){
+                this.handleChildToken();
+                if(this.tokenIndex == this.scan.tokens.length - 1){
+                    break;
+                }
+            }
         }
 
-        l(this.file, this.topNode);
     }
 
     private handleChildToken() {
@@ -66,6 +70,7 @@ export class TLParser {
 
         let firstToken = this.scan.tokens[0];
         let nexToken: TLTagToken | TLValueToken | null;
+
         //属性处理
         if (v.name != firstToken.name) {
 
@@ -75,8 +80,8 @@ export class TLParser {
                 nexToken = null;
             }
 
-            // l("nextToken",nexToken);
-
+            //l("nextToken",nexToken);
+            
             if (v.type == TLTokenKind.typeTag
                 && nexToken
                 && nexToken.type == TLTokenKind.value) { /* 属性值 */
@@ -88,7 +93,6 @@ export class TLParser {
                 );
 
                 // l("typeNode",typeNode);
-
                 this.currentNode.addPro(typeNode);
                 this.tokenIndex = this.tokenIndex + 2;
 
@@ -104,10 +108,7 @@ export class TLParser {
             } else if (v.type == TLTokenKind.endTag) { /* 子属性结束标签 */
                 this.currentNode = this.popNode();
                 this.tokenIndex = this.tokenIndex + 1;
-
             }
-
-            this.handleChildToken();
         }
     }
 
@@ -125,7 +126,7 @@ export class TLParser {
         return this.nodeStack[this.nodeStack.length - 1];
     }
 
-    public writeToFile(toDir: string) {
+    public writeToFile(toDir?: string) {
         let dir = toDir || "../data"
         let file = path.basename(this.file);
         let content = this.topNode.toString();

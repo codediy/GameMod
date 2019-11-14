@@ -60,19 +60,20 @@ export class TLTagToken extends TLToken {
         type: TLTokenKind,
         name: string,
 
-        file: string,
         start: number,
         end: number,
         raw: string,
+        
+        file?: string,
     ) {
         this.type = type;
         this.name = name;
 
-        this.file = file;
         this.start = start;
         this.end = end;
         this.raw = raw;
 
+        this.file = file || "";
     }
 
 }
@@ -82,24 +83,26 @@ export class TLValueToken extends TLToken {
     public value: string;
 
     public initToken(
-        file: string,
+        id: string,
+        value: string,
+
         start: number,
         end: number,
         raw: string,
-
-        id: string,
-        value: string
+        
+        file?: string,
     ) {
         this.type = TLTokenKind.value;
         this.name = "Value";
 
-        this.file = file;
         this.start = start;
         this.end = end;
         this.raw = raw;
 
         this.id = id;
         this.value = value;
+
+        this.file = file || "";
     }
 
 }
