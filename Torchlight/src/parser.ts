@@ -37,7 +37,7 @@ export class TLParser {
 
     public startParse() {
         this.scan.startScan();
-        
+
         //索引
         this.tokenIndex = 0;
         if (this.scan.tokens.length > 0) {
@@ -50,7 +50,7 @@ export class TLParser {
             this.handleChildToken();
         }
 
-        l(this.file,this.topNode);
+        l(this.file, this.topNode);
     }
 
     private handleChildToken() {
@@ -96,17 +96,17 @@ export class TLParser {
                 let tempNode = new TLObject(
                     v.name
                 );
-                this.currentNode.addChild(tempNode); 
-                this.tokenIndex = this.tokenIndex + 1; 
+                this.currentNode.addChild(tempNode);
+                this.tokenIndex = this.tokenIndex + 1;
 
                 this.pushNode(this.currentNode);
-                this.currentNode = tempNode;        
-            } else if( v.type == TLTokenKind.endTag) { /* 子属性结束标签 */
+                this.currentNode = tempNode;
+            } else if (v.type == TLTokenKind.endTag) { /* 子属性结束标签 */
                 this.currentNode = this.popNode();
-                this.tokenIndex = this.tokenIndex + 1; 
-                
+                this.tokenIndex = this.tokenIndex + 1;
+
             }
-            
+
             this.handleChildToken();
         }
     }
@@ -115,7 +115,7 @@ export class TLParser {
         this.nodeStack.push(node);
         this.nodeStackLevel = this.nodeStackLevel + 1;
     }
-    private popNode():TLObject {
+    private popNode(): TLObject {
         let node = this.nodeStack.pop();
         this.nodeStackLevel = this.nodeStackLevel - 1;
         return node;
@@ -125,13 +125,14 @@ export class TLParser {
         return this.nodeStack[this.nodeStack.length - 1];
     }
 
-    public writeToFile() {
+    public writeToFile(toDir: string) {
+        let dir = toDir || "../data"
         let file = path.basename(this.file);
         let content = this.topNode.toString();
-        let dataFile = "./data/" + file.substring(0,file.indexOf('.'))+".json";
-        fs.writeFile(dataFile,content,(err)=>{
+        let dataFile = dir + "/" + file.substring(0, file.indexOf('.')) + ".json";
+        fs.writeFile(dataFile, content, (err) => {
             //提示写入成功
-            l(this.file,"解析完成...");
+            l(this.file, "解析完成...");
         });
     }
 }

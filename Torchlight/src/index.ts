@@ -1,45 +1,39 @@
-import * as glob from "glob";
-import { TLParser } from "./parser";
+import { TLMedia } from "./media";
+
+const gameDir = "E:\\TL\\";
+const mediaDir = gameDir + "MEDIA";
+//地图
+const dungeonsDir = mediaDir + "\\DUNGEONS";
+//特效
+const affixesDir = mediaDir + "\\AFFIXES";
 
 
-const gameDir = ".";
-const mediaDir = gameDir + "/media/";
+// TL处理核心
+export class TL{
+    public _m:TLMedia;
 
-let exts = ["LAYOUT","DAT"];
+    constructor(){
+        this._m = new TLMedia(".");
+    }
 
-exts.forEach((v,i,[])=>{
-    parser(v);
-})
+    public  handleRoot(dir:string) {
+        this._m.setDir(dir);
+        this._m.getChild();
+        this._m.writeDir();
+    }
 
-/* 解析目录 */
-function parser(ext: string,
-    dir?:string
-) {
-    let tempDir = dir 
-        ? mediaDir + dir + "/*." + ext
-        :  mediaDir + "/*." + ext
-        
-    glob(tempDir, (err, files) => {
+    public handleDir(dir:string){
+        this.handleRoot(dir);
+        this._m.getAllFiles();
+        this._m.writeFiels();
+    }
 
-        if (err) {
-            throw err;
-        }
 
-        if (files.length > 0) {
-            let parser = new TLParser(files[0]);
-            parser.startParse();
-            parser.writeToFile();
-
-            for (let i = 1; i < files.length; i++) {
-                parser.setFile(files[i]);
-                
-                parser.startParse();
-                parser.writeToFile();
-            }
-        }
-    })
 }
 
+
+let tl = new TL();
+tl.handleDir(dungeonsDir);
 
 
 
