@@ -33,7 +33,8 @@ export class TL{
 
 
 let tl = new TL();
-tl.handleDir(dungeonsDir);
+tl.handleRoot(mediaDir);
+// tl.handleDir(dungeonsDir);
 
 
 
