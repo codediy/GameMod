@@ -67,7 +67,7 @@ export class TL {
         let tl = new TL();
         tl.handleRoot(mediaDir);
         //引用
-        let igonreDir = ["LAYOUTS","TRANSLATIONS",]
+        let igonreDir = ["TRANSLATIONS",]
         tl._m._dirs.forEach((v,i)=>{
             if(igonreDir.indexOf(v) === -1){
                 let dir = path.join(tl._m._dir,v);
