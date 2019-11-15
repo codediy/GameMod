@@ -176,11 +176,13 @@ export class TLObject implements TLObjectInterface {
     }
 
     toJson() {
-        let property = {};
+        let property = [];
         let child = [];
 
         this.property.forEach((v, i, []) => {
-            property[v.id.toLowerCase()] = v.value+" : "+v.type.toLowerCase();
+            property.push({
+                [v.id.toLowerCase()]:v.value+" : "+v.type.toLowerCase()
+            })
         });
         
         this.childs.forEach((v, i, []) => {

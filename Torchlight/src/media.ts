@@ -9,8 +9,11 @@ import { TLParser } from "./parser";
 interface TLMediaFile {
     dir: string,
     layout: string[],
-    dat: string[]
+    dat: string[],
+    template:string[]
 }
+
+
 
 interface TLMediaFiles  {
     [key: string]: TLMediaFile
@@ -131,7 +134,6 @@ export class TLMedia {
         });
 
     }
-
     handleFile(file: string) {
         if (this._ext.indexOf(path.extname(file)) > -1 
             && this._ignoreFile.indexOf(path.basename(file)) == -1
@@ -139,7 +141,6 @@ export class TLMedia {
             this.pushFiles(file);
         }
     }
-
     pushFiles(file: string) {
         let dir = path.dirname(file).replace(/\\/g, "_").replace(":", "");
         
@@ -147,37 +148,27 @@ export class TLMedia {
             this._allFiles[dir] = {
                 dir: path.dirname(file),
                 layout: [],
-                dat: []
+                dat: [],
+                template:[]
             };
         }
 
         //获取根目录
         let field = path.extname(file).toLowerCase().replace(".", "") as "layout" | "dat";
+        // l(this._dir,field,file);
         this._allFiles[dir][field].push(path.basename(file));
     }
 
     writeDir() {
         let rootFile = "0_"+path.basename(this._dir)+".json";
-       
-        fs.writeFile(this._toDir+"/"+rootFile,this.childToString(),(err)=>{
-            if(err){
-                throw err;
-            }
-            //提示写入成功
-            l(this._dir,"目录信息获取成功");
-        });
-        
+        fs.writeFileSync(this._toDir+"/"+rootFile,this.childToString());
+        l(this._dir,"目录信息获取成功");
     }
     writeFiels()
     {
         let rootFile = "1_"+path.basename(this._dir)+".json";
-        fs.writeFile(this._toDir+"/"+rootFile,this.allFilesToString(),(err)=>{
-            if(err){
-                throw err;
-            }
-            //提示写入成功
-            l(this._dir,"文件信息获取成功");
-        });
+        fs.writeFileSync(this._toDir+"/"+rootFile,this.allFilesToString());
+        l(this._dir,"文件信息获取成功");
     }
 
     // 解析子目录文件
@@ -227,7 +218,16 @@ export class TLMedia {
         },null,"\t");
     }
     allFilesToString(){
-        return JSON.stringify(this._allFiles,null,"\t");
+        let filesNum = 0;
+        Object.keys(this._allFiles).forEach((v,i) => {
+            filesNum += this._allFiles[v].dat.length 
+            filesNum += this._allFiles[v].layout.length
+        });
+
+        return JSON.stringify({
+            filesNum:filesNum,
+            allFiles:this._allFiles
+        },null,"\t");
     }
 
     f() {

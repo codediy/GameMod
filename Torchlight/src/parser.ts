@@ -145,10 +145,9 @@ export class TLParser {
         }
         let dataFile = dir + "/" + file.substring(0, file.indexOf('.')) + ".json";
 
-        fs.writeFile(dataFile, content, (err) => {
-            //提示写入成功
-            l(file, "解析完成...");
-        });
+        fs.writeFileSync(dataFile, content);
+        
+        l(file, "解析完成...");
     }
 }
 

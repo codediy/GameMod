@@ -2,7 +2,7 @@ import {TLParser} from "../src/parser";
 
 
 // Test
-let file = "E:/TL/MEDIA/GLOBALS.DAT";
+let file = "E:/TL/MEDIA/TRANSLATIONS/TAIWANESE/RANDOMNAMES/RANDOMNAMES.DAT";
 // let scan: TLScan = new TLScan(file);
 // scan.startScan();
 

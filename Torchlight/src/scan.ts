@@ -185,10 +185,10 @@ export class TLScan {
             endTag = startTag + temp.length - 1;
             let valueContent = temp.split( /* : */this.tag.valueSplit);
 
-            if (valueContent.length == 2) {
+            if (valueContent.length > 0 ) {
                 tempToken.initToken(
                     valueContent[0],
-                    valueContent[1],
+                    valueContent[1] ? valueContent[1] : "",
                     this.offset,
                     this.offset + endTag - startTag,
                     temp,
