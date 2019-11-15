@@ -34,7 +34,12 @@ export class TLMedia {
     //支持的文件后缀
     public _ext = [
         ".LAYOUT",
-        ".DAT"
+        ".DAT",
+        ".TEMPLATE"
+    ];
+
+    public _ignoreFile = [
+        "TAGS.DAT"
     ];
 
     //解析器
@@ -45,7 +50,9 @@ export class TLMedia {
         this.setDir(dir);
     }
 
-    setDir(dir: string) {
+    setDir(
+        dir: string
+    ) {
         this._dir = dir;
         //数据生成目录
         this._toDir = "../data/"+path.basename(this._dir);
@@ -60,6 +67,10 @@ export class TLMedia {
 
         this._parser = new TLParser(".");
     }
+    setToDir( dir: string){
+        this._toDir = dir;
+    }
+    
     getChild(){
         this.getDirs();
         this.getFiles();
@@ -99,6 +110,7 @@ export class TLMedia {
     getAllFiles() {
         this.handleDir(this._dir);
     }
+
     // 获取递归文件信息
     handleDir(dir: string) {
         this._level = this._level + 1;
@@ -121,7 +133,9 @@ export class TLMedia {
     }
 
     handleFile(file: string) {
-        if (this._ext.indexOf(path.extname(file)) > -1) {
+        if (this._ext.indexOf(path.extname(file)) > -1 
+            && this._ignoreFile.indexOf(path.basename(file)) == -1
+        ) {
             this.pushFiles(file);
         }
     }
@@ -166,13 +180,24 @@ export class TLMedia {
         });
     }
 
-    parseMediaFiles(mediaFiles:TLMediaFile)
+    // 解析子目录文件
+    parseFiles()
+    {
+        this._files.forEach((v,i) => {
+            this.parseFile(path.join(this._dir,v));
+        })
+    }
+
+    // 递归解析所有文件
+    parseAllFiles()
     {   
         //生成各个文件的内容
         Object.keys(this._allFiles).forEach((v,i) => {
             this.parseMediaFiles(this._allFiles[v]);
         });
-
+    }
+    parseMediaFiles(mediaFiles:TLMediaFile)
+    {  
         if(mediaFiles.dat.length > 0){
             mediaFiles.dat.forEach((v,i)=>{
                 this.parseFile(path.join(mediaFiles.dir,v));
@@ -184,13 +209,18 @@ export class TLMedia {
             })
         }
     }
-    parseFile(file:string)
-    {
-        this._parser.setFile(file);
-        this._parser.startParse();
-        this._parser.writeToFile(this._toDir +"/");
+    private parseFile(file:string)
+    {   //检查文件合法
+        if (this._ext.indexOf(path.extname(file)) > -1 
+            && this._ignoreFile.indexOf(path.basename(file)) == -1
+        ) {
+            this._parser.setFile(file);
+            this._parser.startParse();
+            this._parser.writeToFile(this._toDir +"/");
+        }
     }
     childToString(){
+
         return JSON.stringify({
             "dirs":this._dirs,
             "files":this._files

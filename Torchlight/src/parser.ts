@@ -41,15 +41,17 @@ export class TLParser {
         //索引
         this.tokenIndex = 0;
         if (this.scan.tokens.length > 0) {
+
             this.topNode = new TLObject(
                 this.scan.tokens[0].name,
             );
+
             this.currentNode = this.topNode;
             this.tokenIndex = this.tokenIndex + 1;
-            
-            while(true){
+
+            while (true) {
                 this.handleChildToken();
-                if(this.tokenIndex == this.scan.tokens.length - 1){
+                if (this.tokenIndex === this.scan.tokens.length - 1) {
                     break;
                 }
             }
@@ -69,27 +71,34 @@ export class TLParser {
         let v = this.scan.tokens[i];
 
         let firstToken = this.scan.tokens[0];
-        let nexToken: TLTagToken | TLValueToken | null;
+        let nextToken: TLTagToken | TLValueToken | null;
 
         //属性处理
         if (v.name != firstToken.name) {
 
             if (i < tokenLength - 1) {
-                nexToken = this.scan.tokens[i + 1];
+                nextToken = this.scan.tokens[i + 1];
             } else {
-                nexToken = null;
+                nextToken = null;
             }
 
             //l("nextToken",nexToken);
-            
             if (v.type == TLTokenKind.typeTag
-                && nexToken
-                && nexToken.type == TLTokenKind.value) { /* 属性值 */
+                && nextToken) { /* 属性值 */
+
+                let nextIndex = i + 1;
+                    
+                //读取到值 //GLOBALS.DAT bug
+                while (nextToken.type !== TLTokenKind.value) {
+                    nextIndex = nextIndex + 1;
+                    nextToken = this.scan.tokens[nextIndex];
+                    this.tokenIndex = this.tokenIndex + 1;
+                }
 
                 let typeNode = new TLType(
                     v.name,
-                    (nexToken as TLValueToken).id,
-                    (nexToken as TLValueToken).value
+                    (nextToken as TLValueToken).id,
+                    (nextToken as TLValueToken).value
                 );
 
                 // l("typeNode",typeNode);
@@ -105,6 +114,7 @@ export class TLParser {
 
                 this.pushNode(this.currentNode);
                 this.currentNode = tempNode;
+
             } else if (v.type == TLTokenKind.endTag) { /* 子属性结束标签 */
                 this.currentNode = this.popNode();
                 this.tokenIndex = this.tokenIndex + 1;
@@ -130,10 +140,14 @@ export class TLParser {
         let dir = toDir || "../data"
         let file = path.basename(this.file);
         let content = this.topNode.toString();
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
         let dataFile = dir + "/" + file.substring(0, file.indexOf('.')) + ".json";
+
         fs.writeFile(dataFile, content, (err) => {
             //提示写入成功
-            l(this.file, "解析完成...");
+            l(file, "解析完成...");
         });
     }
 }

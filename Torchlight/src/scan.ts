@@ -1,4 +1,6 @@
 import * as fs from "fs";
+import * as path from "path";
+
 import {
     TLTagType,
     TLTag,
@@ -7,6 +9,8 @@ import {
     TLTagToken,
     TLValueToken
 } from "./node";
+
+import {l} from "./util";
 
 /* 解析器 */
 export class TLScan {
@@ -60,12 +64,19 @@ export class TLScan {
         let c = fs.readFileSync(this.file, this.encode);
         if(c){
             this.content = c.trim();
-            this.handleContent();
+            try{
+                this.handleContent();
+            }catch {
+                throw new Error(
+                    "file:"+this.file,
+                )
+            }
         }
     }
 
     private handleContent() {
         while (this.content.length > 0) {
+
             if (this.content[0] == /* [ */ this.tag.startTagLeft) {
                 if (this.content[1] == "/") {
                     /* 结束标签 */
@@ -80,6 +91,7 @@ export class TLScan {
                 this.handleTypeTag();
             }
         }
+        
     }
 
     private handleTag(type: TLTagType) {
@@ -154,11 +166,12 @@ export class TLScan {
     }
 
     private handleValue() {
+        //检查是否Value
         //解析内容
         let startTag = 0,
             endTag: number;
         //token 
-        let tempTagToken = new TLValueToken();
+        let tempToken = new TLValueToken();
 
         for (let i = 0; i < this.content.length; i++) {
             if (String.fromCharCode(10) === this.content[i]) {
@@ -171,8 +184,9 @@ export class TLScan {
             let temp = this.content.substring(startTag, endTag).trim();
             endTag = startTag + temp.length - 1;
             let valueContent = temp.split( /* : */this.tag.valueSplit);
+
             if (valueContent.length == 2) {
-                tempTagToken.initToken(
+                tempToken.initToken(
                     valueContent[0],
                     valueContent[1],
                     this.offset,
@@ -181,7 +195,8 @@ export class TLScan {
                     //this.file
                 );
             }
-            this._tokens.push(tempTagToken);
+
+            this._tokens.push(tempToken);
             this.skip(endTag + 1);
             this.skipSpace();
 
@@ -221,4 +236,32 @@ export class TLScan {
         }
     }
 
+    public rawContent(start:number,end:number){
+        let content = "";
+        if(end >= start){
+            for(let i = start;i <= end; i++){
+                content += this.content[i];
+            }
+        }
+        return content;
+    }
+    public writeToFile(toDir?: string) {
+        let dir = toDir || "../data"
+        let file = path.basename(this.file);
+        if(!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
+        let dataFile = dir + "/" + file.substring(0, file.indexOf('.')) + "_Tokens.json";
+        fs.writeFile(dataFile, this.tokensToString(), (err) => {
+            //提示写入成功
+            l(file, "解析完成...");
+        });
+    }
+
+    public tokensToString(){
+        return JSON.stringify({
+            length:this._tokens.length,
+            tokens:this._tokens
+        },null,"\t");
+    }
 }
